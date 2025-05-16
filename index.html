@@ -1,2 +1,114 @@
-<h1>Placeholder for Jeopardy Game</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Office Jeopardy</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #003366;
+      color: white;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin: 20px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(5, 150px);
+      grid-gap: 5px;
+      margin-bottom: 30px;
+    }
+    .cell, .header {
+      background: #0055a5;
+      padding: 20px;
+      text-align: center;
+      border: 2px solid #ffffff88;
+      cursor: pointer;
+    }
+    .header {
+      background: #002244;
+      font-weight: bold;
+    }
+    .cell.revealed {
+      background: #000;
+      cursor: default;
+    }
+    .question {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #002244;
+      padding: 30px;
+      border: 3px solid white;
+      display: none;
+      z-index: 100;
+    }
+    .question p {
+      margin-bottom: 20px;
+    }
+    .question button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Office Jeopardy</h1>
+  <div class="board" id="board"></div>
+  <div class="question" id="questionBox">
+    <p id="questionText"></p>
+    <button onclick="closeQuestion()">Close</button>
+  </div>
+  <script>
+    const categories = ["Tech", "Food", "Movies", "History", "Random"];
+    const questions = {
+      Tech: ["What does HTML stand for?", "What year was the iPhone released?", "What is the parent company of Google?", "What does CSS stand for?", "What is an API?"],
+      Food: ["What is sushi traditionally wrapped in?", "What country invented pizza?", "What's the main ingredient in guacamole?", "What spice is derived from dried flower stigmas?", "What is tofu made from?"],
+      Movies: ["Who directed 'Inception'?", "What's the highest-grossing film ever?", "Who played Forrest Gump?", "Which movie features a DeLorean time machine?", "What's the first rule of Fight Club?"],
+      History: ["Who was the first U.S. president?", "In which year did WWII end?", "What wall fell in 1989?", "Who discovered America (Eurocentric view)?", "What ancient civilization built the pyramids?"],
+      Random: ["What is the capital of Iceland?", "How many legs does a spider have?", "Which planet is known as the Red Planet?", "What gas do plants absorb?", "What is the fear of heights called?"]
+    };
+
+    const board = document.getElementById("board");
+
+    // Create headers
+    categories.forEach(cat => {
+      const header = document.createElement("div");
+      header.className = "header";
+      header.textContent = cat;
+      board.appendChild(header);
+    });
+
+    // Create question cells
+    for (let i = 0; i < 5; i++) {
+      categories.forEach(cat => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = `$${(i + 1) * 100}`;
+        cell.addEventListener("click", () => revealQuestion(cell, questions[cat][i]));
+        board.appendChild(cell);
+      });
+    }
+
+    function revealQuestion(cell, question) {
+      if (cell.classList.contains("revealed")) return;
+      cell.classList.add("revealed");
+      document.getElementById("questionText").textContent = question;
+      document.getElementById("questionBox").style.display = "block";
+    }
+
+    function closeQuestion() {
+      document.getElementById("questionBox").style.display = "none";
+    }
+  </script>
+</body>
+</html>
+
 
